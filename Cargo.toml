@@ -1,0 +1,8 @@
+[package]
+name = "bd-con-rust"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sea-orm = { version = "1.0.1", features = ["sqlx-postgres", "runtime-async-std-native-tls"] }
+tokio = { version = "1.40.0", features = ["full"] }
