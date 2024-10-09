@@ -6,4 +6,3 @@ pub mod detalle_factura;
 pub mod factura;
 pub mod post;
 pub mod producto;
-pub mod prueba;

@@ -4,4 +4,3 @@ pub use super::detalle_factura::Entity as DetalleFactura;
 pub use super::factura::Entity as Factura;
 pub use super::post::Entity as Post;
 pub use super::producto::Entity as Producto;
-pub use super::prueba::Entity as Prueba;
