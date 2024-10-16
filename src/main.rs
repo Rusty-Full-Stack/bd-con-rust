@@ -9,16 +9,15 @@ use sea_orm::*;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let conexion = bd_con_rust::obtener_conexion().await?;
 
-    let producto_actualizar = producto::ActiveModel {
-        id: ActiveValue::Set(1),
-        nombre: ActiveValue::Set("Cafetera".to_owned()),
-        descripcion: ActiveValue::Set(Some("Mi maravillosa cafetera!".to_owned())),
+    let detalle_factura_borrar = detalle_factura::ActiveModel {
+        factura_id: ActiveValue::Set(1),
+        producto_id: ActiveValue::Set(1),
         ..Default::default()
     };
 
-    producto_actualizar.update(&conexion).await?;
+    detalle_factura_borrar.delete(&conexion).await?;
 
-    println!("Actualizacion exitosa!");
+    println!("Borrado exitoso!");
 
     Ok(())
 }
