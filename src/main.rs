@@ -10,32 +10,21 @@ use sea_orm::QueryTrait;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let conexion = bd_con_rust::obtener_conexion().await?;
 
-    let resultado: Vec<producto::Model> = Producto::find()
-        .filter(
-            Condition::any()
-                .add(producto::Column::PrecioUnitario.gte(100.0))
-                .add(producto::Column::Nombre.starts_with("Cafe")),
-        )
-        .all(&conexion)
-        .await?;
+    let productos_y_detalles: Vec<(producto::Model, Option<detalle_factura::Model>)> =
+        Producto::find_by_id(1)
+            .find_also_related(DetalleFactura)
+            .all(&conexion)
+            .await?;
 
-    for mi_producto in resultado {
-        println!("Id: {}", mi_producto.id);
-        println!("Nombre: {}", mi_producto.nombre);
-        println!("Precio Unitario: {}", mi_producto.precio_unitario);
-        println!("=======================================");
-    }
+    println!("productos y detalles: {:?}", productos_y_detalles);
+    println!("======================================");
+    let productos_con_detalles: Vec<(producto::Model, Vec<detalle_factura::Model>)> =
+        Producto::find_by_id(1)
+            .find_with_related(DetalleFactura)
+            .all(&conexion)
+            .await?;
 
-    let query = Producto::find()
-        .filter(
-            Condition::any()
-                .add(producto::Column::PrecioUnitario.gte(100.0))
-                .add(producto::Column::Nombre.starts_with("Cafe")),
-        )
-        .build(sea_orm::DatabaseBackend::Postgres)
-        .to_string();
-
-    println!("El query es: {}", query);
+    println!("productos con detalles: {:?}", productos_con_detalles);
 
     Ok(())
 }
