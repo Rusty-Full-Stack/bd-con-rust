@@ -9,15 +9,15 @@ use sea_orm::*;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let conexion = bd_con_rust::obtener_conexion().await?;
 
-    let detalle_factura_borrar = detalle_factura::ActiveModel {
-        factura_id: ActiveValue::Set(1),
-        producto_id: ActiveValue::Set(1),
-        ..Default::default()
+    let resultado: Option<producto::Model> = Producto::find_by_id(2).one(&conexion).await?;
+
+    if let Some(producto_encontrado) = resultado {
+        println!("producto encontrado es: ");
+        println!("id: {}", producto_encontrado.id);
+        println!("nombre: {}", producto_encontrado.nombre);
+    } else {
+        println!("producto no encontrado");
     };
-
-    detalle_factura_borrar.delete(&conexion).await?;
-
-    println!("Borrado exitoso!");
 
     Ok(())
 }
